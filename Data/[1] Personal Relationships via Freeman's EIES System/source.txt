@@ -1,0 +1,36 @@
+https://www.stats.ox.ac.uk/~snijders/siena/EIES_data.htm
+
+EIES data sets
+
+The Electronic Information Exchange System (EIES) data were collected by Freeman and Freeman (1980). This data set is discussed also in Wasserman and Faust (1994). This is a network of 32 researchers who participated in an early study on the effects of electronic information exchange, a precursor of email communication.
+
+Download the data set
+
+There are two actor-level covariates. The first is the number of citations in a specified period. The second is the discipline of the researcher. It is coded 1 for sociologists (of whom there were 17), 2 for anthropologists (6), 3 for mathematicians and statisticians (3), and 4 for psychologists (6). These covariates are in the file eies.att (att for attributes). The citation number is very skewed, therefore a dichotomized version is used which is available in file eies.atd (which also contains a dichotomized discipline variable).
+
+Coding for the networks:
+
+(Note: until July 22, 2014, there was an error here; corrected thanks to the attentiveness of Benjamin E. Lind.)
+The two networks are EIES.1 and EIES.2. The codes 0-4 have the following meanings.
+
+0 = do not know the other
+1 = heard about the other, did not meet him/her
+2 = have met the other
+3 = friend
+4 = close personal friend.
+Variables in EIES.att:
+Number of citations
+Discipline: 1 = sociology, 2 = anthropology, 3 = mathematics / statistics, 4 = psychology / communication.
+File EIES.atd is a dichotomized version of EIES.att.
+messages.asc is the matrix of the number of messages sent between actors.
+EIES.paj is a Pajek file of this data set, constructed by V. Batagelj and taken from the Pajek website.
+
+References
+
+Freeman, L.C., and Freeman, S.C., A semi-visible college: Structural effects on a social networks group. Pp. 77-85 in Henderson, M.M., and McNaughton, M.J. (eds.) Electronic Communication: Technology and Impacts Boulder, CO: Westview Press, 1980.
+http://moreno.ss.uci.edu/30.pdf
+
+Wasserman, Stanley, and Katherine Faust. Social Network Analysis: Methods and Applications. New York and Cambridge: Cambridge University Press, 1994. 
+
+Back to the Siena data sets page
+
