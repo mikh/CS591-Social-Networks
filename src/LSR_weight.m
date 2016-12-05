@@ -43,9 +43,9 @@
                     score2=neighbor_weight(Vc,G,A)/((A(Vc,M(jj,:))+A(M(jj,:),Vc))*min(1,(neighbor_weight(Vc,G,A))/(neighbor_weight(M(jj,:),G,A)) ));%%
                     scoren(:,jj)=score1*score2;
                 end
-                fprintf('#%d: Ptansitive = ', i);
-                fprintf('%d,', Pt);
-                fprintf('\n');
+                % DEBUG: fprintf('#%d: Ptansitive = ', i);
+                % fprintf('%d,', Pt);
+                % fprintf('\n');
                 hg=sum(scoren);
                 Pt=scoren./hg;
                 [maxxx,Vn_id] = max(Pt);
@@ -58,7 +58,7 @@
                     
                 B_edge_index(1,j)=ei;  
                 y_sumi = y_sumi + G.Edges.Weight(ei);
-                fprintf('#%d: (%d,%d) edge idx: %d, sum=%d\n', i, Vc, Vn, ei, y_sumi);
+                % fprintf('#%d: (%d,%d) edge idx: %d, sum=%d\n', i, Vc, Vn, ei, y_sumi);
                 
                 %Vn_neigh=neighbors(G,Vn);
                 A(Vc,Vn)=0;
@@ -71,8 +71,8 @@
             % Proceed to next node
             Vc=Vn;
         end
-        fprintf('%d, ', B_edge_index); 
-        fprintf('\n');
+        % fprintf('%d, ', B_edge_index); 
+        % fprintf('\n');
         if any(B_edge_index == 0)
             fprintf('Nonexisting edge indices found. Skip adding to B\n');
             continue;
