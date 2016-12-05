@@ -50,8 +50,8 @@ def integrity_check(Adj):
 
 
 
-path = 	"D:\\Digital_Library\\data\\Documents\\Class\\CS_592_Compressive_Sensing\\Project\\Data\\Social Network Data\\Basic\\matrix_users_graph.txt"	
-path_save = "D:\\Digital_Library\\data\\Documents\\Class\\CS_592_Compressive_Sensing\\Project\\Data\\Social Network Data\\Basic\\A.txt"	
+path = 	"..\\Data\\Social Network Data\\Basic\\matrix_users_graph.txt"	
+path_save = "..\\Data\\Social Network Data\\Basic\\A.txt"	
 
 Adj = load_data(path)
 if integrity_check(Adj):
@@ -61,6 +61,7 @@ if integrity_check(Adj):
 	s = int(G.E_length/5)
 
 	A = lsr_weighted.LSR_WEIGHTED(G, m, s)
+
 	save_data(path_save, A)
 
 

@@ -37,7 +37,7 @@ class Graph():
 		self.w = copy.deepcopy(Adj)
 
 		self.E_length = len(self.E)
-
+		
 	#Calculates the score of a vertex
 	#
 	#@input G<Graph>: Object self-reference
@@ -66,6 +66,17 @@ class Graph():
 			d += G.Adj[v][u]
 		return d
 
+	#Calculates the total degree of the graph
+	#
+	#@input G<Graph>: Object self-reference
+	#@return d<int>: total degree of graph
+	#
+	def total_degree(G):
+		d = 0
+		for v in G.V:
+			d += G.degree(v)
+		return d
+
 	#Calculates the node strength of a vertex
 	#
 	#@input G<Graph>: Object self-reference
@@ -76,6 +87,17 @@ class Graph():
 		ns = 0
 		for u in range(len(G.w[v])):
 			ns += G.w[v][u]
+		return ns
+
+	#Calculates the total node strength of the graph
+	#
+	#@input G<Graph>: Object self-reference
+	#@return ns<int>: node strength of the graph
+	#
+	def total_node_strength(G):
+		ns = 0
+		for v in G.V:
+			ns += G.node_strength(v)
 		return ns
 
 	#Gets the neighbor list of a vertex
