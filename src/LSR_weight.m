@@ -28,6 +28,7 @@
         end
         
         [maxx,Vc]=max(Pf);
+        %keyboard
         fprintf('#%d: Vc = %d, Pf(Vc) = %f,%f\n', i, Vc, Pf(Vc), maxx);
         
         % Check all neighbors of Vc and find Pt, to get Vn
@@ -60,11 +61,11 @@
                 Pt=scoren./hg;
                 [maxxx,Vn_id] = max(Pt);
                 Vn = M(Vn_id);
-                
+                %fprintf('Vn = %d\n', Vn);
                 ei = findedge(G,Vc,Vn);
                 if ei == 0
-                    fprintf('FATAL: no edge in (Vc,Vc) = (%d,%d)\n', Vc, Vn);
-                    % break;
+                    fprintf('FATAL: no edge in (Vc,Vn) = (%d,%d)\n', Vc, Vn);
+                    break;
                 end
                     
                 B_edge_index(1,j)=ei;  
@@ -87,7 +88,7 @@
         % fprintf('%d, ', B_edge_index); 
         % fprintf('\n');
         if any(B_edge_index == 0)
-            fprintf('Nonexisting edge indices found. Skip adding to B\n');
+            fprintf('i=%d, Vc=%d: Nonexisting edge indices found. Skip adding to B\n', i, Vc);
             continue;
         end
             
