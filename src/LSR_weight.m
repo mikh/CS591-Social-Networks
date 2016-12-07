@@ -11,7 +11,7 @@
     N = numnodes(G);
     
     number_edge=count_edge(G);
-    m = floor(N/5);
+    m = floor(number_edge/15);
     s = m;
     
     B=zeros(m,number_edge);%% the A in Ax=y
@@ -73,6 +73,7 @@
                 end
                     
                 B_edge_index(1,j)=ei;  
+                B(i,ei) = 1;
                 y_sumi = y_sumi + G.Edges.Weight(ei);
                 % fprintf('#%d: (%d,%d) edge idx: %d, sum=%d\n', i, Vc, Vn, ei, y_sumi);
                 
@@ -91,12 +92,12 @@
         end
         % fprintf('%d, ', B_edge_index); 
         % fprintf('\n');
-        if any(B_edge_index == 0)
-            fprintf('i=%d, Vc=%d: Nonexisting edge indices found. Skip adding to B\n', i, Vc);
-            continue;
-        end
+        % if any(B_edge_index == 0)
+            % fprintf('i=%d, Vc=%d: Nonexisting edge indices found. Skip adding to B\n', i, Vc);
+            % continue;
+        % end
             
-        B(i,B_edge_index)=1;
+        % B(i,B_edge_index)=1;
         y(i) = y_sumi;
     end
     close(h);

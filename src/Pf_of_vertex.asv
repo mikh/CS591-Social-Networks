@@ -17,11 +17,8 @@ function [su, pf]=Pf_of_vertex(nodeId,G,A)
     S=sum(su);
     score=su(nodeId);
     % fprintf('%d: sum=%f, score = %f,', nodeId, S, score);
-    if isempty(neighbors(G, nodeId))
-        pf = 0;
-    else
-        pf=(1-(score/S))*(1/(N-1));
-    end
+    if neighbors(G
+    pf=(1-(score/S))*(1/(N-1));
     %if nodeId == 101
         % fprintf('%d: sum=%f, score = %f,', nodeId, S, score);
         % fprintf('Pf=%f\n', pf);    
