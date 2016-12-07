@@ -18,8 +18,8 @@ function [su, pf]=Pf_of_vertex(nodeId,G,A)
     score=su(nodeId);
     % fprintf('%d: sum=%f, score = %f,', nodeId, S, score);
     pf=(1-(score/S))*(1/(N-1));
-    if nodeId == 101
-        fprintf('%d: sum=%f, score = %f,', nodeId, S, score);
-        fprintf('Pf=%f\n', pf);    
-    end
+    %if nodeId == 101
+        % fprintf('%d: sum=%f, score = %f,', nodeId, S, score);
+        % fprintf('Pf=%f\n', pf);    
+    %end
 end

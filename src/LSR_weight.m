@@ -2,14 +2,18 @@
     
    % A = [0 31 41 12 2;0 0 5 61 0; 0 0 0 5 0; 0 0 0 0 1;0 0 0 0 0];%%need parse data here according to different datasets
     % A = input_adj;
-    G=graph(A,'upper');
-    G_original = G;
+    
+    G_original = graph(A_original, 'upper')
+    A = A_original;
+    G=G_original;
+    
     
     N = numnodes(G);
+    
+    number_edge=count_edge(G);
     m = floor(N/5);
     s = m;
     
-    number_edge=count_edge(G);
     B=zeros(m,number_edge);%% the A in Ax=y
     y = zeros(1,m);
     h = waitbar(0,'Please wait...');
@@ -29,7 +33,7 @@
         
         [maxx,Vc]=max(Pf);
         %keyboard
-        fprintf('#%d: Vc = %d, Pf(Vc) = %f,%f\n', i, Vc, Pf(Vc), maxx);
+        % fprintf('#%d: Vc = %d, Pf(Vc) = %f,%f\n', i, Vc, Pf(Vc), maxx);
         
         % Check all neighbors of Vc and find Pt, to get Vn
         B_edge_index=zeros(1,s);
@@ -40,7 +44,7 @@
         for j=1:s
              G=graph(A,'upper');
              M = neighbors(G,Vc);
-             
+             %fprintf('\t#%d: Vc = %d, Pf(Vc) = %f\n', j, Vc, Pf(Vc));
              % DEBUG: fprintf('#%d: %d neighbors = ', i, Vc);
              % fprintf('%d,', M);
              % fprintf('\n');
