@@ -303,6 +303,7 @@ def _process_matrix(matrix, labels=None):
 
 	return nodes, edges, groups
 
+
 #Runs the script
 #
 #@input log_path<string>: path to log file to store results of script run
@@ -312,7 +313,7 @@ def _process_matrix(matrix, labels=None):
 #@input plotly<boolean>: use plotly for visualization
 #@input iris<boolean>: use iris for visualization
 #
-def _run(log_path, data_path, matrix_file, label_file, plotly, iris):
+def run(log_path, data_path, matrix_file, label_file, sparse_edges, plotly, iris):
 	log_file = define_log_file(log_path, log_path=log_path)
 	script_timer = log_start(log_file)
 
@@ -336,7 +337,7 @@ def _run(log_path, data_path, matrix_file, label_file, plotly, iris):
 
 	if plotly:
 		log(log_file, 'Visualize with plotly...')
-		plotly_visualization.visualize(nodes, edges, groups)
+		plotly_visualization.visualize(nodes, edges, groups, hard_edges=sparse_edges)
 		log(log_file, 'Visualization ready.')
 	elif iris:
 		log(log_file, 'Visualize with IRIS...')
@@ -348,6 +349,7 @@ def _run(log_path, data_path, matrix_file, label_file, plotly, iris):
 	log_end(log_file, timer=script_timer)
 
 #ARGUMENT PARSING CODE
+'''
 log_p = os.path.join(global_paths.logs, 'modules', module_name, module_name+'.log')
 data_p = os.path.join(global_paths.data, 'modules', module_name)
 matrix_p = 'matrix_users_graph.txt'
@@ -369,3 +371,4 @@ arg_parser = arg_lib.ArgumentController(description=description, set_variables=a
 var_data = arg_parser.parse_args()
 if var_data != None:
 	_run(**var_data)
+'''

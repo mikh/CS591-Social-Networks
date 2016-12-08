@@ -565,6 +565,7 @@ def _run(log_path, data_path, user_file, knn, combine_folder, crawl_for_users, c
 	log_end(log_file, timer=script_timer)
 
 #ARGUMENT PARSING CODE
+'''
 log_p = os.path.join(global_paths.logs, 'modules', module_name, module_name + '.log')
 data_p = os.path.join(global_paths.data, 'modules', module_name)
 users_file = 'users.json'
@@ -591,3 +592,4 @@ arg_parser = arg_lib.ArgumentController(description=description, set_variables=a
 var_data = arg_parser.parse_args()
 if var_data != None:
 	_run(**var_data)
+'''
