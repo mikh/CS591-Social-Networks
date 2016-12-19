@@ -14,6 +14,7 @@ from lib import console_lib
 from lib.log_lib import *
 
 import plotly_visualization
+import networkx_visualization
 
 module_name = 'visualization'
 
@@ -159,15 +160,15 @@ def _get_connected_nodes(w):
 #@return dist<list<list<float>>>: matrix of distances
 #
 def _Floyd_Warshall(w, V):
-	max_value = -1
-	for ii in range(V):
-		for jj in range(V):
-			if w[ii][jj] != 0 and max_value < w[ii][jj]:
-				max_value = w[ii][jj]
-	for ii in range(V):
-		for jj in range(V):
-			if w[ii][jj] != 0:
-				w[ii][jj] = max_value - w[ii][jj]
+	#max_value = -1
+	#for ii in range(V):
+	#	for jj in range(V):
+	#		if w[ii][jj] != 0 and max_value < w[ii][jj]:
+	#			max_value = w[ii][jj]
+	#for ii in range(V):
+	#	for jj in range(V):
+	#		if w[ii][jj] != 0:
+	#			w[ii][jj] = max_value - w[ii][jj]
 	dist = []
 	for ii in range(V):
 		row = []
@@ -326,19 +327,22 @@ def _load_sparse_edges(sparse_file):
 #@input data_path<string>: path to data folder for module
 #@input graph<string>: Folder name of graph to visualize
 #@input plotly<boolean>: use plotly for visualization
+#@input networkx<boolean>: use networkx for visualization
 #
-def _run(log_path, data_path, graph, plotly):
+def _run(log_path, data_path, graph, plotly, networkx):
 	log_file = define_log_file(log_path, log_path=log_path)
 	script_timer = log_start(log_file)
 
 	p = os.path.join(data_path, graph)
-	if graph == '' or not path_lib.directory_exists(p) or not (plotly):
+	if graph == '' or not path_lib.directory_exists(p) or not (plotly or networkx):
 		print("Please specify a valid graph to visualize and the visualization method")
 		sys.exit(-1)
 
 	matrix_file = os.path.join(p, 'adjacency.txt')
 	label_file = os.path.join(p, "labels.txt")
 	sparse_file = os.path.join(p, 'sparse.txt')
+	output_folder = os.path.join(p, 'results')
+	path_lib.create_path(output_folder)
 
 
 	log(log_file, 'Loading matrix file...')
@@ -365,6 +369,10 @@ def _run(log_path, data_path, graph, plotly):
 		log(log_file, 'Visualize with plotly...')
 		plotly_visualization.visualize(nodes, edges, groups, hard_edges=sparse_edges)
 		log(log_file, 'Visualization ready.')
+	elif networkx:
+		log(log_file, 'Visualize with networkx...')
+		networkx_visualization.visualize(nodes, edges, groups, output_folder, hard_edges=sparse_edges)
+		log(log_file, 'Visualization ready.')
 	else:
 		log(log_file, 'No visualization selected.')
 
@@ -382,7 +390,8 @@ arg_vars = {
 	'graph': {'help': 'Folder name of graph to visualize', 'value': graph},
 }
 flag_vars = {
-	"plotly" : {"help": "Visualize using plotly", "value": True}
+	"plotly" : {"help": "Visualize using plotly", "value": True},
+	"networkx": {"help": "Visualize using networkx", "value": False}
 }
 
 arg_parser = arg_lib.ArgumentController(description=description, set_variables=arg_vars, flag_variables=flag_vars)

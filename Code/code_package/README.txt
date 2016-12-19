@@ -107,3 +107,13 @@ py\Scripts\python raw_parser.py --set_file=<file> --parse<num>
 
 
 
+=================
+
+visualization.py
+
+Loads graph data and creates a visualization of the data. To run, specify the folder in graphs\ to load data from. From there it will create all appropriate graphs
+
+py\Scripts\python visualization.py --set_graph=<folder> --plotly
+	Loads the graph represented by <folder> using the plotly method
+
+
