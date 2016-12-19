@@ -168,7 +168,7 @@ def create_coordinates(nodes, groups, base_coords):
 		if max(max_distance(group_coords[group])) > dist_length:
 			dist_length = max(max_distance(group_coords[group]))
 	for group in group_vertices_map:
-		d = dist_length + max(max_distance(group_coords[group]))/2
+		d = max(max_distance(group_coords[group]))/2
 		group_vertices_map[group] = multiply_coords([group_vertices_map[group]], [d, d, d])
 		group_coords[group] = add_coords(group_coords[group], group_vertices_map[group][0])
 
@@ -220,7 +220,7 @@ def visualize(nodes, edges, groups, directed=False, title='Graph', text='Text', 
 
 	print("Creating coordinates....")
 	layt = G.layout('kk', dim=3)
-	base_coords = [[layt[k][0], layt[k][1], layt[k][2]] for k in range(N)]
+	base_coords = [[layt[k][0], layt[k][1], layt[k][2]] for k in range(len(layt))]
 
 	nodes = create_coordinates(nodes, groups, base_coords)
 
@@ -263,10 +263,20 @@ def visualize(nodes, edges, groups, directed=False, title='Graph', text='Text', 
 	trace2 = Scatter3d(x=Xn, y=Yn, z=Zn, mode='markers', name='actors', marker=Marker(symbol='dot', size=6, color=group, colorscale='Viridis', line=Line(color='rgb(50,50,50)', width=0.5)), text=labels, hoverinfo='text')
 	axis = dict(showbackground=False, showline=False, zeroline=False, showgrid=False, showticklabels=False, title='')
 	layout = Layout(title=title, width=1000, height=1000, showlegend=False, scene=Scene(xaxis=XAxis(axis), yaxis=YAxis(axis), zaxis=ZAxis(axis)), margin=Margin(t=100), hovermode='closest', annotations=Annotations([Annotation(showarrow=False, text=text, xref='paper', yref='paper', x=0, y=0.1, xanchor='left', yanchor='bottom', font=Font(size=14))]))
-	data = Data([trace1, trace2, trace3])
-	fig=Figure(data=data, layout=layout)
+	
+
+	data1 = Data([trace2, trace1])
+	data2 = Data([trace2, trace1, trace3])
+	data3 = Data([trace2, trace3])
+	fig1=Figure(data=data1, layout=layout)
+	fig2=Figure(data=data2, layout=layout)
+	fig3=Figure(data=data3, layout=layout)
 
 	print("Displaying graph...")
-	py.plot(fig, filename=filename)
+	py.plot(fig1, filename=filename)
+	input('Display both full and sparse edges')
+	py.plot(fig2, filename=filename)
+	input('Display only sparse edges')
+	py.plot(fig3, filename=filename)
 
 

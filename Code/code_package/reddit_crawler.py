@@ -31,7 +31,7 @@ def _examine_object(obj):
 #@return reddit<praw.Reddit>: reddit object
 #
 def _create_user_agent(user_agent):
-	return praw.Reddit(user_agent=user_agent)
+	return praw.Reddit(user_agent=user_agent, client_id='YOoUKhbwFcS2Gd1KAxMPRU7kKPw', client_secret='DoNotSHAREWithANYBODY', redirect_uri='http://127.0.0.1:65010/authorize_callback')
 
 #Get top submissions from a subreddit
 #
@@ -282,10 +282,10 @@ def _crawl_for_users(log_file, data_path):
 
 			log(log_file, "Loading current user JSON file...")
 			user_file = os.path.join(data_path, 'users.json')
-			if not path_lib.file_exists(p):
-				with open(p, 'w') as f:
+			if not path_lib.file_exists(user_file):
+				with open(user_file, 'w') as f:
 					f.write("{}")
-			with open(os.path.join(data_path, 'users.json'), 'r') as f:
+			with open(user_file, 'r') as f:
 				users = json.load(f)
 
 			log(log_file, "Processing all comments...")

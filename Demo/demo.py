@@ -23,7 +23,6 @@ def parse_method1(path):
 def parse_method2(path):
 	with open(path, 'r') as f:
 		data = f.readlines()
-
 	Adj = []
 	for d in data:
 		if d.strip() == '];':

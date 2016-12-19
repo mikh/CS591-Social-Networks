@@ -4,6 +4,7 @@ import os
 import json
 import copy
 import math
+import sys
 import random
 
 from lib import const_lib
@@ -302,29 +303,56 @@ def _process_matrix(matrix, labels=None):
 
 	return nodes, edges, groups
 
+#Loads the sparse edges
+#
+#@input sparse_file<string>: path to sparse file
+#@return sparse_edges<list<dict>>: list of sparse edges
+#
+def _load_sparse_edges(sparse_file):
+	sparse_edges = []
+	with open(sparse_file, 'r') as f:
+		edges = f.readlines()
+	for edge in edges:
+		edge = edge.strip()
+		if edge != '':
+			edge = edge.split('\t')
+			e = {'source': int(edge[0]), 'target': int(edge[1])}
+			sparse_edges.append(e)
+	return sparse_edges
+
 #Runs the script
 #
 #@input log_path<string>: path to log file to store results of script run
 #@input data_path<string>: path to data folder for module
-#@input matrix_file<string>: filename of matrix to load
-#@input label_file<string>: filename of label file
+#@input graph<string>: Folder name of graph to visualize
 #@input plotly<boolean>: use plotly for visualization
-#@input iris<boolean>: use iris for visualization
 #
-def _run(log_path, data_path, matrix_file, label_file, plotly, iris):
+def _run(log_path, data_path, graph, plotly):
 	log_file = define_log_file(log_path, log_path=log_path)
 	script_timer = log_start(log_file)
 
-	path_lib.create_path(data_path)
+	p = os.path.join(data_path, graph)
+	if graph == '' or not path_lib.directory_exists(p) or not (plotly):
+		print("Please specify a valid graph to visualize and the visualization method")
+		sys.exit(-1)
+
+	matrix_file = os.path.join(p, 'adjacency.txt')
+	label_file = os.path.join(p, "labels.txt")
+	sparse_file = os.path.join(p, 'sparse.txt')
+
 
 	log(log_file, 'Loading matrix file...')
-	matrix, entries = _load_matrix_data(os.path.join(data_path, matrix_file))
+	matrix, entries = _load_matrix_data(matrix_file)
 	log(log_file, 'Matrix loaded. Contains {} entries.'.format(entries))
+
+	log(log_file, 'Loading sparse edges...')
+	sparse_edges = _load_sparse_edges(sparse_file)
+	log(log_file, 'Sparse edges loaded. Contains {} edges'.format(len(sparse_file)))
 
 	labels = None
 	if label_file != None:
 		log(log_file, 'Loading label file...')
-		with open(os.path.join(data_path, label_file), 'r') as f:
+		with open(label_file, 'r') as f:
 			labels = f.readlines()
 		labels = [x.strip() for x in labels]
 		log(log_file, 'Labels loaded.')
@@ -335,11 +363,7 @@ def _run(log_path, data_path, matrix_file, label_file, plotly, iris):
 
 	if plotly:
 		log(log_file, 'Visualize with plotly...')
-		plotly_visualization.visualize(nodes, edges, groups)
-		log(log_file, 'Visualization ready.')
-	elif iris:
-		log(log_file, 'Visualize with IRIS...')
-		iris_visualization.visualize(nodes, edges, log_file)
+		plotly_visualization.visualize(nodes, edges, groups, hard_edges=sparse_edges)
 		log(log_file, 'Visualization ready.')
 	else:
 		log(log_file, 'No visualization selected.')
@@ -348,20 +372,17 @@ def _run(log_path, data_path, matrix_file, label_file, plotly, iris):
 
 #ARGUMENT PARSING CODE
 log_p = os.path.join(global_paths.logs, 'modules', module_name, module_name+'.log')
-data_p = os.path.join(global_paths.data, 'modules', module_name)
-matrix_p = 'matrix_users_graph.txt'
-label_p = None
+data_p = os.path.join(global_paths.data, 'modules', 'reddit_crawler', 'graphs')
+graph = ''
 
 description = 'Loads graph data and creates a visualization of the data'
 arg_vars = {
 	'log_path': {'help': 'Path to where log data is stored', 'value': log_p},
 	'data_path': {'help': 'Path to where data is stored', 'value': data_p},
-	'matrix_file': {'help': 'Filename of matrix data to visualizze', 'value': matrix_p},
-	'label_file': {'help': 'Filename of node labels', 'value': label_p}
+	'graph': {'help': 'Folder name of graph to visualize', 'value': graph},
 }
 flag_vars = {
-	"plotly" : {"help": "Visualize using plotly", "value": True},
-	"iris": {"help": "Visualize using IRIS", "value": False},
+	"plotly" : {"help": "Visualize using plotly", "value": True}
 }
 
 arg_parser = arg_lib.ArgumentController(description=description, set_variables=arg_vars, flag_variables=flag_vars)

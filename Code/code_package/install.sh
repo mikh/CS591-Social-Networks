@@ -8,7 +8,7 @@ if [ ! -d py ]; then
 fi
 
 py/Scripts/python -m pip install --upgrade pip
-py/Scripts/pip install praw
+py/Scripts/pip install praw==3.5.0
 py/Scripts/pip install pytz
 py/Scripts/pip install whls/python_igraph-0.7.1.post6-cp35-none-win_amd64.whl
 py/Scripts/pip install plotly
