@@ -115,9 +115,7 @@ def write_to_matlab_file(path, c_mat):
 				return "0"
 			else:
 				return "{:.2}".format(y)
-		f.write('[')
-		f.write("; ".join([", ".join([transform(y) for y in x]) for x in c_mat]))
-		f.write('];')
+		f.write("\n".join([" ".join([transform(y) for y in x]) for x in c_mat]))
 
 
 #integrates users file
@@ -207,6 +205,7 @@ def _run(data_base, groups, nodes, name, same_group_thresh, diff_group_high, dif
 	diff_group_high = float(diff_group_high)
 	diff_group_low = float(diff_group_low)
 	percentage_cross = float(percentage_cross)
+	num_connections = int(num_connections)
 
 	if name == '' or groups == 0 or nodes == 0:
 		print('Please specify number of nodes, groups, and name of the graph')
