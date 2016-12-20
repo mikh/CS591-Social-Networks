@@ -40,10 +40,12 @@ code_package\
 	install.bat
 	install.sh
 	plotly_visualization.py
+	networkx_visualization.py
 	README.txt
 	reddit_crawler.py
 	visualization.py
 	raw_parser.py
+	matrix_generator.py
 
 config\ = contains configuration data for Python scripts
 data\modules\reddit_crawler\ = data used by reddit data miner
@@ -60,10 +62,12 @@ whls\ = installation files
 install.bat = batch installation file
 install.sh = bash installation file
 plotly_visualization.py = source file used by visualization.py to provide plotly support
+networkx_visualization.py = source file used by visualization.py to provide networkx support
 README.txt = this document
 reddit_crawler.py = Crawler script to extract data from reddit. See later for options
 visualization.py = Visualization script to display data in a chart
 raw_parser.py = Converts raw data output of matlab to visualization ready data
+matrix_generator.py = Script that creates an Adjacency matrix
 
 
 =================
@@ -117,3 +121,13 @@ py\Scripts\python visualization.py --set_graph=<folder> --plotly
 	Loads the graph represented by <folder> using the plotly method
 
 
+=================
+
+matrix_generator.py
+
+Converts data files from crawler into an adjacency matrix. To run specify the number of groups to have, the total number of nodes to use, and the name of the output file
+
+py\Scripts\python matrix_generator.py --set_groups=<num_groups> --set_nodes=<num_nodes> --set_name=<name_of_output_file>
+	Converts the raw data into an adjacency matrix. There are other settings here as well, but they have been optimized for fastest and most accurate output.
+
+	
