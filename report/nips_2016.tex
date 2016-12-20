@@ -10,16 +10,17 @@
 \usepackage{nips_2016}
 
 % to compile a camera-ready version, add the [final] option, e.g.:
-% \usepackage[final]{nips_2016}
+%\usepackage[final]{nips_2016}
 
 \usepackage[utf8]{inputenc} % allow utf-8 input
 \usepackage[T1]{fontenc}    % use 8-bit T1 fonts
 \usepackage{hyperref}       % hyperlinks
 \usepackage{url}            % simple URL typesetting
 \usepackage{booktabs}       % professional-quality tables
-\usepackage{amsfonts}       % blackboard math symbols
+\usepackage{amsmath,amsfonts,amsthm} % Math packages
 \usepackage{nicefrac}       % compact symbols for 1/2, etc.
 \usepackage{microtype}      % microtypography
+\usepackage{graphicx}
 
 \title{Social Networks Analysis using Compressive Sensing}
 
@@ -42,25 +43,20 @@
   \texttt{sahilsd@bu.edu} \\
   % examples of more authors
   \And
-  Coauthor \\
-  Affiliation \\
-  Address \\
-  \texttt{email} \\
-  %% \AND
-  %% Coauthor \\
-  %% Affiliation \\
-  %% Address \\
-  %% \texttt{email} \\
-  %% \And
-  %% Coauthor \\
-  %% Affiliation \\
-  %% Address \\
-  %% \texttt{email} \\
-  %% \And
-  %% Coauthor \\
-  %% Affiliation \\
-  %% Address \\
-  %% \texttt{email} \\
+  Mikhail Andreev \\
+  Boston University \\
+  Boston, MA 02115 \\
+  \texttt{mikh@bu.edu} \\
+  \AND
+  Chen Chen \\
+  Boston University \\
+  Boston, MA 02115 \\
+  \texttt{takchen@bu.edu} \\
+  \And
+  Stephanie Chiao \\
+  Boston University \\
+  Boston, MA 02115 \\
+  \texttt{schiao@bu.edu} \\
 }
 
 \begin{document}
@@ -130,6 +126,43 @@ overcome the theoretical challenges discussed in [?] while enabling weighted unb
 inter-community structures. The paper also briefly describes a relatively new $l1$-minimization technique called Lasso
 [?]. This algorithm is very similar to LSR algorithm which is described below.  
 \section{LSR Algorithm}
+LSR stands for low-cost sparse recovery framework. It takes advantage of the sparsity property in social networks, which in most cases, are graphs represented by nodes and edges. Sparsity is a natural assumption in some social network analysis such as the detection of inter-community links in social networks and identification of top-k central nodes in networks. Because the number of such nodes and links are much smaller than the set of all nodes and links in networks.
+
+There are two constraint worth mentioning in this field
+\begin{itemize}
+\item Measurement matrix is in a more restrictive class taking only non-negative integer entries, while random Gaussian measurement matrices are usually used in CS literature.
+\item Network topological constrains which is not considered in existing CS researches.
+\end{itemize}
+And there are a few recent works that do consider the network topological constraints in order to construct a feasible measurement matrix. But the problem is they don’t take into account the strength of links, which is definitely not realistic. The previous works include the state-of-the-art CS-based algorithms ,RW, and UCS-WN.
+LSR-weighted algorithms improve the functionality in the following two major aspects
+\begin{itemize}
+\item A feasible measurement matrix with less number of measurements and relative low-error
+\item Maximum coverage of network
+\end{itemize}
+
+
+\subsection{General Model}
+The general model is:
+$$y_{m\times} = A_{m \times |E|}x_{|E|\times1}$$
+input for the algorithm is the graph ,and the output is the A measurement matrix. Here is an A matrix from a random graph that can give you better intuition about what it is:
+
+\includegraphics{A_matrix.png}
+
+so in this example, we have 3 rows, which means 3 measurements, and each measurement is an iteration of the algorithm, and at the same time, it is also the traversal of a certain part of the graph. The number of columns denotes the number of edges in the graph.
+
+
+Besides, we represented the graph using upper adjacency matrix, and all the functions and operations we wrote are all based on the property of upper adjacency matrix.
+
+
+The edge index of the graph is simply defined in this way: it starts from the
+(1,2) to (1,3) to (1,4) to (end of row), then start from the (2,3) to (2,4) to (end of row),etc. This is basically like a snake.
+
+
+
+
+
+
+
 
 \section{Applications}
 With this algorithm, it's easy to identify the inter-community edges that define some clustered graph structure. Till
@@ -167,24 +200,24 @@ There could be plenty more applications where analyzing a cluster of users can b
 than looking at individual user. These are small subset of such applications that could be extended further as more
 sophisticated approach to solve the corresponding problems.  
 \section{Results}
-\subsubsection{Dataset}
-\label{headings}
+Using the algorithm presented above, we evaluated it on several datasets. Our data included both previously compiled data as well as real-world examples compiled specifically for this project. Here we will explain the structure and source of our datasets, then we will show the results and present our analysis of those tests.
 
-\subsection{visualization}
+\subsection{Dataset}
+There are three primary datasets we tested the algorithm on. All of these datasets are real-world weighted social networks with different sets of links. The first dataset is the network of personal relationships via the Freeman EIES System which has been examined in previous papers. Our other two datasets come from a popular social media and forum discussion website known as Reddit. 
 
+\subsubsection{Reddit Datasets}
+The Reddit platform consists of a series of forum pages on which users can post submissions and comment on other people's submissions. This allows users to demonstrate their interest in a variety of topics, as each forum page is dedicated to a specific topic. A users posting and comment history is publically available. Taking advantage of this, we crawled the Reddit's pages, and acquired a list of users who have made comments on those pages. From there, we linked back to the user, and acquired a list of the pages that the users posted on. If a user had a large number of posts on a specific forum's page, this was a clear sign of interest in that topic. Using this scheme, we constructed a relative interest chart for each user. We then correlated the users based on shared interests to create a weighted graph. Each node represented a user, and each edge was the amount of shared interest two users had. 
 
-\subsubsection{graphs?}
+Using this as the base data-set, we constructed two types of graphs to view the relationship between users. The first type of graph consisted of random users chosen from the datasets with a set number of links between them. Since the users present here was random there was no intrinsic structure to this type of graph. The second type of graph involved taking users who predominantly posted to one of the pages. After acquiring several such groups of users, we examined the the links they had in-between the different groups. Since the user's primary interests were not related, the links between users in two different groups were much weaker than those within a single group. From here we ran the algorithm to see if we could decrease the graph complexity while still retaining the inter-graph connections.
 
+\subsection{Visualization}
+In order to better understand the sparse structure of the graphs, we created a visualization engine that would plot the different networks overlayed with the sparse structure. In an effort to acquire groupings for the non-grouped data, we ran the datasets through a K-Means grouping algorithm and used those groups in the display.
 
-% Of note is the command \verb+\citet+, which produces citations
-% appropriate for use in inline text.  For example,
-% \begin{verbatim}
-%    \citet{hasselmo} investigated\dots
-% \end{verbatim}
-% produces
-% \begin{quote}
-%   Hasselmo, et al.\ (1995) investigated\dots
-% \end{quote}
+\subsection{Graphs}
+
+\subsection{Results}
+
+\subsection{Analysis}
 
 \section{Conclusion}
 In this paper, we've looked at compressive sensing as an effective way of handling massive scale data in social
@@ -202,8 +235,9 @@ begin investigation. The techniques taught during CS591C2 course were also helpf
 
 For most of the project, we worked together as a group. A rough distribution of work can be seen as follows, \\
 Sahil - initial research involving going through a few papers, help with coding, applications of LSR-weighted \\
-..\\
-.. \\
+Mikhail - Acquiring real-world data, visualization, and testing\\
+Chen - Implemented the first and second version of LSR algorithm \\
+Stephenie - Joined the group after most of the ground work was done. Assisted in data compilation and results analysis.
 
 \section*{References}
 \small
