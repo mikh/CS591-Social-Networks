@@ -83,7 +83,7 @@ together and makes it easier to analyze the entire social networks in groups.
 \section{Introduction}
 Graphs have always been an efficient way of representing large amount of data. The nodes stand for individual entities
 and the edges represent some non-trivial relation between them. This idea has been extended to represent billions of
-users and their mutual relationships in the real-world systems such as social networks. A typical representation of
+users and their mutual relationships in the real-world systems such as social networks [7]. A typical representation of
 social networks using graphs, or social graphs, is to represent the users as nodes and their relationships such as being
 friends, accessing similar content is represented by edges. The edges can further have some weights associated with them
 to denote the degree of associativity between the users. Such structural representation can often blow up in size. It
@@ -93,11 +93,11 @@ simple as finding top $k$-nodes can take order of few minutes using polynomial t
 To avoid this problem, it's sometimes easier to group the nodes together and analyze the clusters of multiple nodes
 together. This shrinks down the problem of analyzing billions of nodes to analyzing a few hundred or thousand nodes
 depending on the degree of such clustering. Such groups, or $communities$ of users correspond to the real-world social
-groups. This makes such groups even more significant because of the important characteristics it stands for. These
+groups [2]. This makes such groups even more significant because of the important characteristics it stands for. These
 communities are the more intensely connected groups with relatively small number of edges between them. In this paper,
 we try to analyze applications of compressive sensing to identifying these small number of important edges that connect
 multiple communities. Naturally, by treating the graph as a signal, the problem gets converted into that of retrieving
-some $k$-sparse vector corresponding to $k$ such edges. 
+some $k$-sparse vector corresponding to $k$ such edges [1]. 
 
 The rest of the paper discusses brief background and current scenario of applications of compressive sensing to social
 networks in section 2. Then we take a closer look at one such algorithm called LSR-weighted in section 3. Then section 4
@@ -106,15 +106,18 @@ running LSR-weighted and shows how these communities look by 3D visualization. T
 characteristics and limitations of these algorithms and mention few possible enhancements. 
 \section{Related Work}
 Within past decade, online social networks have emerged and have given a new dimension to complex graph networks. For
-example, according to Nielsen [?], worldwide users spend over 110 billion minutes on social media sites per month, which
+example, according to Nielsen [2], worldwide users spend over 110 billion minutes on social media sites per month, which
 accounts for 22\% of all the time spent online, surpassing even the time spent on email. In the analysis of social networks, the existence of missing data is almost inevitable because the aforementioned constraints may prevent access to entire data of the networks. Mostly, direct measurement of each individual node can be difficult, costly, and sometimes impossible due to massive scale, distributed management, and access limitation of real social networks.
 
-The developments in compressive sensing started with the seminal works in [?] and [?]. The authors noted that the
-combination of l 1 -minimization and random matrices can lead to efficient recovery of sparse vectors and also has
+The developments in compressive sensing started with the seminal works in [1]. The authors noted that the
+combination of l1-minimization and random matrices can lead to efficient recovery of sparse vectors and also has
 strong potential to be used in many applications. For the last couple of years, CS has been considered in signal
-processing, but its role in network applications is still in its early stages due to some challenging issues. In networks, measurements are restricted by network topological constraints which is again absent in existing CS research. In other words, for every measurement, only links that induce a path or connected sub-graph can be aggregated together in the same measurement. As a result, compressive sensing for network applications is quite different from other CS problems, although it is interesting in its own right because we can represent many real-world systems by their graphs/networks.
+processing, but its role in network applications is still in its early stages due to some challenging issues [3]. In
+networks, measurements are restricted by network topological constraints which is again absent in existing CS research.
+In other words, for every measurement, only links that induce a path or connected sub-graph can be aggregated together
+in the same measurement [5]. As a result, compressive sensing for network applications is quite different from other CS problems, although it is interesting in its own right because we can represent many real-world systems by their graphs/networks.
 
-The first paper we found that applied compressive sensing to large graph networks was [?] which used compressive sensing
+The first paper we found that applied compressive sensing to large graph networks was [3] which used compressive sensing
 to computer networks to identify congested links that are vulnerable to packet drops. This research falls under the
 category of $network\ tomography$ and states many theoretical constraints on using traditional compressive sensing
 techniques on graph networks. The algorithm proposed is quite efficient and serves the purpose of monitoring computer
@@ -122,13 +125,13 @@ networks. But the main disadvantage it has is the biased output due to a techniq
 traversing the graph, the algorithm is biased towards nodes of high degree. So it fails to capture the weighted
 unbiasedness in a network.
 
-This lack of weighted constraint is solved solved by considering weights while traversing the graph in [?]. This
+This lack of weighted constraint is solved solved by considering weights while traversing the graph in [6]. This
 algorithm is also equally efficient and talks about important null-space property of measurement matrix which guarantees
 correctness on the algorithm. But this algorithm doesn't talk about the applications of Compressive Sensing in Social
-Networks. This topic is discussed in detail, probably for the first time, in [?]. This work describes how we can
-overcome the theoretical challenges discussed in [?] while enabling weighted unbiased output for detecting
+Networks. This topic is discussed in detail, probably for the first time, in [4]. This work describes how we can
+overcome the theoretical challenges discussed in [6] while enabling weighted unbiased output for detecting
 inter-community structures. The paper also briefly describes a relatively new $l1$-minimization technique called Lasso
-[?]. This algorithm is very similar to LSR algorithm which is described below.  
+[9]. This algorithm is very similar to LSR algorithm which is described below.  
 \section{LSR Algorithm}
 
 \section{Applications}
@@ -147,7 +150,7 @@ different communities.
 \subsection{Advertising Content}
 By representing the edges as the degree to which users access similar content, we can group the users together based on
 accessed content correlation. If this content is specifically the advertisements that users found relevant, then we get
-an interesting clustering of users based on similarity of advertisements. It can help targeted advertising [?] where
+an interesting clustering of users based on similarity of advertisements. It can help targeted advertising [10] where
 users from the same community can get similar advertisements to optimize the user experience and in turn increase
 revenue.
 
@@ -241,5 +244,8 @@ ing Approach for Inter-Community Detection
 [9] R. Tibshirani, “Regression shrinkage and selection via
 the lasso,” Journal of the Royal Statistical Society B,
 vol. 58, pp. 267–288, 1994.
+
+[10] https://en.wikipedia.org/wiki/Targeted\_advertising
+
 
 \end{document}
