@@ -112,3 +112,19 @@ for ii=1:length(sparseEdges)
     [sin,sout] = findedge(G_original, sparseEdges(ii));
     fprintf('Sparse edge %d: %d <-> %d\n', ii, sin, sout);
 end
+
+fileID = fopen(output_file, 'w');
+[r,c] = size(A_original);
+for ii = 1:r
+    for jj = 1:c
+        fprintf(fileID, '%f\t', A_original(ii,jj));
+    end
+    fprintf(fileID, '\n');
+end
+
+fprintf(fileID, 'Sparse Edges:\n');
+for ii = 1:length(sparseEdges)
+    [sin, sout] = findedge(G_original, sparseEdges(ii));
+    fprintf(fileID, '%d <-> %d\n', sin, sout);
+end
+fclose(fileID);

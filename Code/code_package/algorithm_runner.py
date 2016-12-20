@@ -29,7 +29,7 @@ def _run(data_base, name, matlab_path):
 		f.write('{}\n'.format(input_path))
 		f.write('{}\n'.format(output_path))
 
-	command = '"{}" -nodisplay -nosplash -nodesktop -r "run(\'{}\');"'.format(matlab_path, matlab_code_script)
+	command = '""{}" -nodisplay -nosplash -nodesktop -r "run(\'{}\');""'.format(matlab_path, matlab_code_script)
 	print(command)
 	os.system(command)
 
