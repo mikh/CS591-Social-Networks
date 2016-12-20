@@ -16,4 +16,9 @@ fprintf('Done.\n');
 
 fprintf('Running algorithm...\n');
 LSR_weight
-%exit;
+
+fileID = fopen('lock.txt', 'w');
+fprintf(fileID, '0');
+fclose(fileID);
+
+exit;
