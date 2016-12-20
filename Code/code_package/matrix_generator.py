@@ -47,9 +47,11 @@ def link_same_group_nodes(l, num_connections):
 			connection_matrix[x][y] /= max_link
 			connection_matrix[x][y] = 0.3 - (0.2 * connection_matrix[x][y])
 
+	number_of_connections = int(len(l) * num_connections)
+
 	for x in range(len(l)):
-		if len(range(x+1, len(l))) > num_connections:
-			chosen_nodes = random.sample(range(x+1, len(l)), num_connections)
+		if len(range(x+1, len(l))) > number_of_connections:
+			chosen_nodes = random.sample(range(x+1, len(l)), number_of_connections)
 			for y in range(x+1, len(l)):
 				if not y in chosen_nodes:
 					connection_matrix[x][y] = -1
@@ -205,7 +207,7 @@ def _run(data_base, groups, nodes, name, same_group_thresh, diff_group_high, dif
 	diff_group_high = float(diff_group_high)
 	diff_group_low = float(diff_group_low)
 	percentage_cross = float(percentage_cross)
-	num_connections = int(num_connections)
+	num_connections = float(num_connections)
 
 	if name == '' or groups == 0 or nodes == 0:
 		print('Please specify number of nodes, groups, and name of the graph')
@@ -245,7 +247,7 @@ same_group_thresh=0.7
 diff_group_high=0.2
 diff_group_low=0.1
 percentage_cross=0.1
-num_connections = 3
+num_connections = 0.2
 
 
 description='Script that creates an Adjacency matrix'
