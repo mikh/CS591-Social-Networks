@@ -1,0 +1,14 @@
+{
+	"digital-library":{
+		"base": "",
+		"data": "data",
+		"temp": "temp",
+		"lib": "lib",
+		"logs": "logs",
+		"modules": "modules",
+		"config": "config",
+		"test": "test",
+		"docs": "docs",
+		"deploy": "deploy"
+	}
+}

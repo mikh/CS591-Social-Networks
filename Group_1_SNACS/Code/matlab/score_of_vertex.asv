@@ -1,0 +1,12 @@
+function [score]=score_of_vertice(nodeId,G,A)    
+    sumNeighbor = zeros(1,numnodes(G));
+    for ii=1:numnodes(G)
+        sumNeighbor(ii) = sumNeighbor + A(nodeId, M(ii));
+    end
+su1=sum(A(nodeId,:));
+su2=sum(A(:,nodeId));
+su=su1+su2;
+deg = degree(G,nodeId);
+score=deg/(2*count_edge(G))+(su/sumofscore(G,A));
+
+end

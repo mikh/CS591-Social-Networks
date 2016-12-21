@@ -7,10 +7,10 @@
 % to avoid loading the natbib package, add option nonatbib:
 % \usepackage[nonatbib]{nips_2016}
 
-\usepackage{nips_2016}
+%\usepackage{nips_2016}
 
 % to compile a camera-ready version, add the [final] option, e.g.:
-%\usepackage[final]{nips_2016}
+\usepackage[final]{nips_2016}
 
 \usepackage[utf8]{inputenc} % allow utf-8 input
 \usepackage[T1]{fontenc}    % use 8-bit T1 fonts
@@ -149,7 +149,7 @@ The general model is:
 $$y_{m\times} = A_{m \times |E|}x_{|E|\times1}$$
 input for the algorithm is the graph ,and the output is the A measurement matrix. Here is an A matrix from a random graph that can give you better intuition about what it is:
 
-\includegraphics{A_matrix.png}
+\includegraphics{imgs/A_matrix.png}
 
 so in this example, we have 3 rows, which means 3 measurements, and each measurement is an iteration of the algorithm, and at the same time, it is also the traversal of a certain part of the graph. The number of columns denotes the number of edges in the graph.
 
@@ -209,7 +209,7 @@ Using the algorithm presented above, we evaluated it on several datasets. Our da
 There are three primary datasets we tested the algorithm on. All of these datasets are real-world weighted social networks with different sets of links. The first dataset is the network of personal relationships via the Freeman EIES System which has been examined in previous papers. Our other two datasets come from a popular social media and forum discussion website known as Reddit. 
 
 \subsubsection{Reddit Datasets}
-The Reddit platform consists of a series of forum pages on which users can post submissions and comment on other people's submissions. This allows users to demonstrate their interest in a variety of topics, as each forum page is dedicated to a specific topic. A users posting and comment history is publically available. Taking advantage of this, we crawled the Reddit's pages, and acquired a list of users who have made comments on those pages. From there, we linked back to the user, and acquired a list of the pages that the users posted on. If a user had a large number of posts on a specific forum's page, this was a clear sign of interest in that topic. Using this scheme, we constructed a relative interest chart for each user. We then correlated the users based on shared interests to create a weighted graph. Each node represented a user, and each edge was the amount of shared interest two users had. 
+The Reddit platform consists of a series of forum pages on which users can post submissions and comment on other people's submissions. This allows users to demonstrate their interest in a variety of topics, as each forum page is dedicated to a specific topic. A users posting and comment history is publicly available. Taking advantage of this, we crawled the Reddit's pages, and acquired a list of users who have made comments on those pages. From there, we linked back to the user, and acquired a list of the pages that the users posted on. If a user had a large number of posts on a specific forum's page, this was a clear sign of interest in that topic. Using this scheme, we constructed a relative interest chart for each user. We then correlated the users based on shared interests to create a weighted graph. Each node represented a user, and each edge was the amount of shared interest two users had. 
 
 Using this as the base data-set, we constructed two types of graphs to view the relationship between users. The first type of graph consisted of random users chosen from the datasets with a set number of links between them. Since the users present here was random there was no intrinsic structure to this type of graph. The second type of graph involved taking users who predominantly posted to one of the pages. After acquiring several such groups of users, we examined the the links they had in-between the different groups. Since the user's primary interests were not related, the links between users in two different groups were much weaker than those within a single group. From here we ran the algorithm to see if we could decrease the graph complexity while still retaining the inter-graph connections.
 
@@ -217,10 +217,52 @@ Using this as the base data-set, we constructed two types of graphs to view the 
 In order to better understand the sparse structure of the graphs, we created a visualization engine that would plot the different networks overlayed with the sparse structure. In an effort to acquire groupings for the non-grouped data, we ran the datasets through a K-Means grouping algorithm and used those groups in the display.
 
 \subsection{Graphs}
+\subsubsection{EIES}
+Our first set of graphs show the results of running the algorithm on the EIES dataset:\\\\
+\includegraphics[scale=0.4]{imgs/EIES/original.png}
+\includegraphics[scale=0.4]{imgs/EIES/hard.png}
+\\\\
+This is a largely unstructured dataset, however, there are a few things of note. The majority of nodes are clustered together, but there are a couple outliers. In the original image to the left we see 4 outliers with a mass of connections going towards them. The figure to the right shows only the sparse edges and nodes after the algorithm is run. Here we can clearly see that for the bottom red node, the mass of edges has been replaced by a single sparse edge, and similar behavior occurred with the two blue nodes.
 
+\subsubsection{Reddit Unstructured}
+Our second dataset shows a set of graphs from a random sampling of Reddit users:
+\\\\
+\includegraphics[scale=0.4]{imgs/reddit_unstructured/original.png}
+\includegraphics[scale=0.4]{imgs/reddit_unstructured/hard.png}
+\\\\
+Because of the lack of structure in this dataset, it is difficult to determine the reduced complexity and potential gain we can get out of sparsifying its structure.
+
+\subsubsection{Reddit Structured}
+Our final dataset included a sets of Reddit users organized in groups. For this we present two sets of graphs. The first set of graphs is when we have a small number of edges in the graph. The second set of graphs is when the number of edges creates complete sub groups and partially complete inter-groups.
+\\\\
+\includegraphics[scale=0.4]{imgs/reddit_small/original.png}
+\includegraphics[scale=0.4]{imgs/reddit_small/hard.png}
+\\\\
+From here we can clearly see the benefit of using this algorithm. We have reduced the large number of intra-group edges down to a minimal amount to show group structure. However, the amount of inter-group edges remains at about the same value. This allows for a much a sparser version of a graph while still clearly showing the relationship different groups have.
+\\\\
+\includegraphics[scale=0.4]{imgs/reddit_large/original.png}
+\includegraphics[scale=0.4]{imgs/reddit_large/hard.png}
+\\\\
+However, when the number of edges becomes very large, it becomes difficult to preserve the inter-group edges. We are instead presented with isolated groups. This may be useful to identify existing weakly-linked groups in the structure, but it fails to retain the relationships between those groups.
 \subsection{Results}
+Looking at these graphs from a general perspective we can see three series of trends of how the algorithm behaves as the number of nodes and edges change. All of these results were compiled from the structured Reddit data.
+\\\\
+\includegraphics[scale=0.5]{imgs/charts/sparse_node_vs_edges.png}
+\\\\
+This chart shows us the percentage of sparse nodes found in the graph as the number of edges changes. What we see is a general lack of change in the ratio of sparse nodes found. What we can gather from this is that, we should expect a relatively similar amount of sparse data, regardless if the graph is initially very sparse, or if it fully connected.
+\\\\
+\includegraphics[scale=0.5]{imgs/charts/sparse_edges_vs_edges.png}
+\\\\
+This graph shows the number of sparse edges found as the number of edges changes. The general trend shows an increasing amount of sparse edges as the number of total edges rises. This indicates that in order to maintain the structure of the graph, the number of sparse edges must remain at a constant ratio to the number of edges. This would indicate that we would still be able to see the correct structure even if a graph is fully connected. In other words, we should not lose graph structural elements because we ignore more edges if the graph is more connected.
+\\\\
+\includegraphics[scale=0.5]{imgs/charts/sparse_cross_intra_edges_vs_edges.png}
+\\\\
+This final chart shows the number of cross-group sparse edges (in blue) and the number of intra-group sparse edges (in red) as the total number of original edges changes. While the previous graph indicated that the number of sparse edges increased as the number of edges increased, we see from this graph that the number of edges that scales is the number of intra-group edges.
 
 \subsection{Analysis}
+What we can deduce from these graphs and charts is that the algorithm is very effective at creating a sparse graph from a more connected one. However, when looking at inter-group structure, we clearly see that we begin to lose that aspect as the number of edges increases. This means the larger the graph, the more difficult it is to differentiate inter-group edges from regular edges. 
+
+However, this also points to a clear direction for progress. By focusing more on being able to preserve those inter-group edges as opposed to the inner edges, we can maintain a small graph that still shows how different communities are linked.
 
 \section{Conclusion}
 In this paper, we've looked at compressive sensing as an effective way of handling massive scale data in social

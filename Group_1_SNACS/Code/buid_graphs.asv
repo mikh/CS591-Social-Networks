@@ -1,0 +1,18 @@
+path = 'data\modules\reddit_crawler\results.txt';
+A = importdata(path, '\t');
+
+
+%sparse_node/node vs. num edges
+p = 'data\modules\reddit_crawler\charts\sparse_node_vs_edges.png';
+sn_n = A(:, 3)./A(:, 2);
+E = A(:, 4);
+f = figure();
+scatter(E, sn_n);
+title('Sparse node percentage vs. Edges');
+saveas(f, p);
+
+%sparse edges vs edges
+p = 'data\modules\reddit_crawler\charts\sparse_edges_vs_edges.png';
+
+se = A(:, 7);
+E = A(:
